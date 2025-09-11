@@ -58,21 +58,35 @@ class User
     }
 
     //Query methods
-    public function find(int $id): array
+    public function all(): array
     {
-        $stmt = $this->connection->prepare('SELECT * FROM usuario WHERE id=:id');
-        $stmt->execute(['id' => $id]);
+        $stmt = $this->connection->prepare('SELECT * FROM usuario');
+        $stmt->execute();
+        $usuario = $stmt->fetchAll();
+        return $usuario;
+    }
+    public function find(?int $id = null, ?string $login = null): array
+    {
+        if ($id !== null) {
+            $stmt = $this->connection->prepare('SELECT * FROM usuario WHERE id=:id');
+            $stmt->execute(['id' => $id]);
+            $usuario = $stmt->fetch();
+            return $usuario;
+        }
+        $stmt = $this->connection->prepare('SELECT * FROM usuario where login=:login');
+        $stmt->execute(['login' => $login]);
         $usuario = $stmt->fetch();
         return $usuario;
     }
-    public function store(): bool {
+    public function store(): bool
+    {
         $stmt = $this
             ->connection
             ->prepare('INSERT INTO usuario(nome,login,senha) VALUES (:nome,:login,:senha)');
         return $stmt->execute([
             "nome" => $this->getName(),
             "login" => $this->getLogin(),
-            "senha" => $this->getPassword(),
+            "senha" => md5($this->getPassword()),
         ]);
     }
 }

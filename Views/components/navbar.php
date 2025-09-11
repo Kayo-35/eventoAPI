@@ -6,8 +6,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link active" href="/register/create">Registre-se</a>
-                <a class="nav-link active" href="/login/create">Log-in</a>
+                <a class="nav-link" href="/register/create">Registre-se</a>
+                <a class="nav-link" href="/login/create">Log-in</a>
+                <a class="btn btn-outline-primary mx-1" href="/user">Usuarios</a>
+                <a class="btn btn-outline-success mx-1" href="/produto">Produtos</a>
             </div>
         </div>
     </div>

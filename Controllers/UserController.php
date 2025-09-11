@@ -1,5 +1,5 @@
 <?php
-
+require __DIR__ . "/../Models/User.php";
 class UserController
 {
     //Propriedades
@@ -7,11 +7,26 @@ class UserController
 
     //Metodos
     public function __construct() {}
-    public function index() {
-        require __DIR__."/../Views/User/index.php";
+    public function index()
+    {
+        $usuarios = new User()->all();
+        view('User/index', [
+            "usuarios" => $usuarios
+        ]);
     }
-    public function show() {}
-    public function store() {}
+    public function show()
+    {
+        $usuario = new User()->find(id: 1);
+        view('User/index', [
+            "usuario" => $usuario
+        ]);
+    }
+    public function create() {
+        view('Account/register.create');
+    }
+    public function store() {
+
+    }
     public function edit() {}
     public function update() {}
     public function destroy() {}

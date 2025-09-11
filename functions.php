@@ -34,3 +34,7 @@ function dd(mixed $value): void
 function pathController(string $path): string {
     return __DIR__."/Controllers/$path.php";
 }
+
+function view(string $path,array $params = []): void {
+    require __DIR__."/Views/$path.php";
+}
