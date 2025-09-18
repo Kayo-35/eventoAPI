@@ -2,7 +2,7 @@
 $router = new Router();
 $router->index('home', '/'); //Index
 
-$router->show('user', '/user'); //Delete
+$router->show('user', '/user'); //Show
 $router->edit('user', '/user/edit'); //Edit
 $router->update('user', '/user/edit'); //Put
 $router->delete('user', '/user'); //Delete

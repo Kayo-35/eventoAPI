@@ -9,4 +9,4 @@ require_once __DIR__."/../functions.php";
 $url = $_SERVER["REQUEST_URI"];
 $method = $_POST['method'] ?? $_SERVER["REQUEST_METHOD"];
 $values = resolveResource($url);
-$router->route($values['resource'],$url,$method,$values['action']);
+$router->route($values['resource'],parse_url($url)['path'],$method,$values['action']);

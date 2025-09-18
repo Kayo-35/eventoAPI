@@ -16,18 +16,45 @@ class UserController
     }
     public function show()
     {
-        $usuario = new User()->find(id: 1);
-        view('User/index', [
+        $usuario = new User()->find(filter_input(INPUT_GET,'id'));
+        view('User/show', [
             "usuario" => $usuario
         ]);
     }
-    public function create() {
+    public function create()
+    {
         view('Account/register.create');
     }
-    public function store() {
 
+    public function update()
+    {
+        //Requisições JSON
+        $request = json_decode(file_get_contents("php://input"), true);
+        if ($request !== null) {
+            //Atribuição
+            $user = new User();
+            $user->setName($request['nome'])
+                ->setLogin($request['email'])
+                ->setPassword($request['password'])
+                ->setId($request['id']);
+
+            $user->update();
+            echo json_encode('Usuário atualizado');
+            die();
+        }
     }
-    public function edit() {}
-    public function update() {}
-    public function destroy() {}
+    public function destroy()
+    {
+        //Json request
+        $request = json_decode(file_get_contents("php://input"), true);
+        if ($request !== null) {
+            //Atribuição
+            $user = new User();
+            $user->setId($request['id']);
+
+            $user->delete();
+            echo json_encode('Usuário removido');
+            die();
+        }
+    }
 }

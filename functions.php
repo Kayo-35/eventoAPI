@@ -2,23 +2,35 @@
 
 function resolveResource(string $url): array
 {
-    $url = explode('/', $url);
-    $resource =  match ($url[1]) {
+    $url = parse_url($url);
+    $resource =  match ($url['path']) {
         "/" => 'Home',
-        "user" => 'User',
-        "register" => 'Register',
-        "login" => 'Login',
-        "product" => 'Product',
+        "/user" => 'User',
+        "/register" => 'Register',
+        "/register/create" => 'Register',
+        "/login" => 'Login',
+        "/login/create" => 'Login',
+        "/product" => 'Product',
         default => 'Home'
     };
-    $action = in_array('create', $url) ? 'create' : null;
-    $action = in_array('edit', $url) ? 'edit' : $action;
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $action = in_array('create', $url) ? 'store' : 'update';
+    $action = null;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = 'store';
     }
-    if ($action == null) {
-        $action = isset($_SERVER["QUERY_STRING"]) ? 'show' : 'index';
+
+    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        $action = 'destroy';
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+        $action = 'update';
+    }
+
+    if ($action === null) {
+        $action = (str_contains($url['path'], 'create')) ? 'create' : 'index';
+        if (isset($_SERVER["QUERY_STRING"])) {
+            $action = 'show';
+        }
     }
     return [
         "action" => $action,
@@ -31,10 +43,13 @@ function dd(mixed $value): void
     die();
 }
 
-function pathController(string $path): string {
-    return __DIR__."/Controllers/$path.php";
+function pathController(string $path): string
+{
+    return __DIR__ . "/Controllers/$path.php";
 }
 
-function view(string $path,array $params = []): void {
-    require __DIR__."/Views/$path.php";
+function view(string $path, array $params = []): void
+{
+    require __DIR__ . "/Views/$path.php";
+    die();
 }

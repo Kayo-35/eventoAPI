@@ -89,4 +89,25 @@ class User
             "senha" => md5($this->getPassword()),
         ]);
     }
+    public function update(): bool
+    {
+        $stmt = $this
+            ->connection
+            ->prepare("UPDATE usuario SET nome = :nome,login = :login,senha = :senha WHERE id = :id");
+        return $stmt->execute([
+            "id" => $this->getId(),
+            "nome" => $this->getName(),
+            "login" => $this->getLogin(),
+            "senha" => md5($this->getPassword())
+        ]);
+    }
+    public function delete(): bool
+    {
+        $stmt = $this
+            ->connection
+            ->prepare("DELETE FROM usuario WHERE id = :id");
+        return $stmt->execute([
+            "id" => $this->getId(),
+        ]);
+    }
 }
